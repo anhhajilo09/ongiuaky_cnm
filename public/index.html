@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Title</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+        
+        #loading {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 99999999999;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(192, 192, 192, 0.5);
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="loading">
+        <div class="center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
+    <div class="container mt-2">
+        <div class="row">
+            <div class="col-md-4">
+                <h3>Quản lý sản phẩm</h3>
+            </div>
+            <div class="col-md-5">
+                <button id="btnDelete" type="submit" onclick="showConfirmDelete()" style='width:4rem' class="float-right btn btn-danger" disabled>Xóa</button>
+                <button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#modelThem">Nhập mới</button>
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div id="alert" class="col-md-9">
+
+            </div>
+            <div class="col-md-9">
+                <table class="table table-bordered table-inverse">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th style='width:4rem'>
+                                <div class="form-check form-check-inline">
+                                    <label class="form-check-label">
+                                        <input onchange="handleCheckAll()" type="checkbox" class="form-check-input" name="" id="checkbox-all" value="checkedValue">
+                                    </label>
+                                </div>
+                            </th>
+                            <th>Mã</th>
+                            <th style='width:30rem'>Tên</th>
+                            <th>Số lượng</th>
+                        </tr>
+                    </thead>
+                    <tbody id="list_sanpham">
+                        <tr>
+                            <td colspan="4">Loading....</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal cofirm xóa -->
+    <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Xóa sản phẩm?</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn chắc chắn xóa sản phẩm này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                    <button onclick="handleDelete()" type="button" class="btn btn-primary">Xác nhận</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal thêm -->
+    <div class="modal fade" id="modelThem" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm sản phẩm</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
+                <form id="formAdd" action="javascript:handleAdd()">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="">Mã</label>
+                            <input type="text" class="form-control" name="ma" id="ma" aria-describedby="error-ten">
+                            <small name="error" id="error-ma" class="form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Tên</label>
+                            <input type="text" class="form-control" name="ten" id="ten" aria-describedby="error-ten">
+                            <small name="error" id="error-ten" class="form-text text-danger"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="">Số lượng</label>
+                            <input type="number" class="form-control" name="soluong" id="soluong" aria-describedby="error-soluong">
+                            <small name="error" id="error-soluong" class="form-text text-danger"></small>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Lưu</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Optional JavaScript -->
+    <script src="javascripts/app.js"></script>
+</body>
+
+</html>
